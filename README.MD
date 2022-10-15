@@ -1,12 +1,13 @@
 # Automate Websecurity Assessment 
 ## Using OWASP ZAP and Automation Framework
 
-## Pre-req
-OWASP ZAP
+## Files
+DVWA.yaml - Automation script written in YAML for the ZAP Automation Framework, containing all informations related to the application, passive checks, actives scans and report.
+DVWA-Report.json - OWASP ZAP vulnerability report in json.
 
-## Predefine application : 
+## Requirements
+OWASP ZAP
 DVWA running at http://192.168.63.128/dvwa
-DVWA.yaml - File containing all informations related to the application, passive and actives scan rules and report.
 
 
 **How to execute:**
