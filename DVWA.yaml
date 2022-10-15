@@ -1,0 +1,291 @@
+---
+env:
+  contexts:
+  - name: "dvwa"
+    urls:
+    - "http://192.168.63.128/dvwa/"
+    includePaths:
+    - "http://192.168.63.128/dvwa/.*"
+    excludePaths: []
+    authentication:
+      method: "form"
+      parameters:
+        loginRequestBody: "username={%username%}&password={%password%}&Login=Login"
+        loginPageUrl: "http://192.168.63.128/dvwa/login.php"
+        loginRequestUrl: "http://192.168.63.128/dvwa/login.php"
+      verification:
+        method: "response"
+        loggedInRegex: "\\QUsername:</b> admin\\E"
+        loggedOutRegex: "\\Q<title>Damn Vulnerable Web App (DVWA) - Login</title>\r\
+          \\E"
+        pollFrequency: 60
+        pollUnits: "requests"
+        pollUrl: ""
+        pollPostData: ""
+    sessionManagement:
+      method: "cookie"
+      parameters: {}
+    users:
+    - name: "admin"
+      credentials:
+        password: "admin"
+        username: "admin"
+  parameters:
+    failOnError: true
+    failOnWarning: false
+    progressToStdout: true
+  vars: {}
+jobs:
+- parameters:
+    maxAlertsPerRule: 0
+    scanOnlyInScope: true
+    maxBodySizeInBytesToScan: 0
+    enableTags: true
+  rules:
+  - id: 10023
+    name: "Information Disclosure - Debug Error Messages"
+    threshold: "medium"
+  - id: 10202
+    name: "Absence of Anti-CSRF Tokens"
+    threshold: "medium"
+  - id: 90011
+    name: "Charset Mismatch"
+    threshold: "medium"
+  - id: 10020
+    name: "Anti-clickjacking Header"
+    threshold: "medium"
+  - id: 90022
+    name: "Application Error Disclosure"
+    threshold: "medium"
+  - id: 10055
+    name: "CSP"
+    threshold: "medium"
+  - id: 10038
+    name: "Content Security Policy (CSP) Header Not Set"
+    threshold: "medium"
+  - id: 10019
+    name: "Content-Type Header Missing"
+    threshold: "off"
+  - id: 10010
+    name: "Cookie No HttpOnly Flag"
+    threshold: "off"
+  - id: 10011
+    name: "Cookie Without Secure Flag"
+    threshold: "off"
+  - id: 10054
+    name: "Cookie without SameSite Attribute"
+    threshold: "off"
+  - id: 10017
+    name: "Cross-Domain JavaScript Source File Inclusion"
+    threshold: "off"
+  - id: 10098
+    name: "Cross-Domain Misconfiguration"
+    threshold: "off"
+  - id: 10025
+    name: "Information Disclosure - Sensitive Information in HTTP Referrer Header"
+    threshold: "off"
+  - id: 10024
+    name: "Information Disclosure - Sensitive Information in URL"
+    threshold: "off"
+  - id: 10027
+    name: "Information Disclosure - Suspicious Comments"
+    threshold: "off"
+  - id: 90001
+    name: "Insecure JSF ViewState"
+    threshold: "off"
+  - id: 90033
+    name: "Loosely Scoped Cookie"
+    threshold: "off"
+  - id: 2
+    name: "Private IP Disclosure"
+    threshold: "off"
+  - id: 10015
+    name: "Re-examine Cache-control Directives"
+    threshold: "off"
+  - id: 50001
+    name: "Script Passive Scan Rules"
+    threshold: "off"
+  - id: 10040
+    name: "Secure Pages Include Mixed Content"
+    threshold: "off"
+  - id: 10037
+    name: "Server Leaks Information via \"X-Powered-By\" HTTP Response Header Field(s)"
+    threshold: "off"
+  - id: 3
+    name: "Session ID in URL Rewrite"
+    threshold: "off"
+  - id: 50003
+    name: "Stats Passive Scan Rule"
+    threshold: "off"
+  - id: 10057
+    name: "Username Hash Found"
+    threshold: "off"
+  - id: 10032
+    name: "Viewstate"
+    threshold: "off"
+  - id: 10003
+    name: "Vulnerable JS Library (Powered by Retire.js)"
+    threshold: "off"
+  - id: 90030
+    name: "WSDL File Detection"
+    threshold: "off"
+  - id: 10105
+    name: "Weak Authentication Method"
+    threshold: "off"
+  - id: 10061
+    name: "X-AspNet-Version Response Header"
+    threshold: "off"
+  - id: 10021
+    name: "X-Content-Type-Options Header Missing"
+    threshold: "off"
+  - id: 10056
+    name: "X-Debug-Token Information Leak"
+    threshold: "off"
+  name: "passiveScan-config"
+  type: "passiveScan-config"
+- parameters:
+    context: "dvwa"
+    user: "admin"
+    url: "http://192.168.63.128/dvwa"
+    maxDuration: 0
+    maxDepth: 0
+    maxChildren: 0
+  name: "spider"
+  type: "spider"
+  tests:
+  - onFail: "INFO"
+    statistic: "automation.spider.urls.added"
+    site: ""
+    operator: ">="
+    value: 100
+    name: "At least 100 URLs found"
+    type: "stats"
+- parameters:
+    maxDuration: 0
+  name: "passiveScan-wait"
+  type: "passiveScan-wait"
+- parameters:
+    context: "dvwa"
+    user: "admin"
+    policy: "Active"
+    maxRuleDurationInMins: 0
+    maxScanDurationInMins: 30
+  policyDefinition:
+    defaultStrength: "medium"
+    defaultThreshold: "medium"
+    rules:
+    - id: 40032
+      name: ".htaccess Information Leak"
+      threshold: "off"
+      strength: "default"
+    - id: 30001
+      name: "Buffer Overflow"
+      threshold: "off"
+      strength: "default"
+    - id: 40003
+      name: "CRLF Injection"
+      threshold: "off"
+      strength: "default"
+    - id: 40026
+      name: "Cross Site Scripting (DOM Based)"
+      threshold: "off"
+      strength: "default"
+    - id: 40014
+      name: "Cross Site Scripting (Persistent)"
+      threshold: "off"
+      strength: "default"
+    - id: 40016
+      name: "Cross Site Scripting (Persistent) - Prime"
+      threshold: "off"
+      strength: "default"
+    - id: 40017
+      name: "Cross Site Scripting (Persistent) - Spider"
+      threshold: "off"
+      strength: "default"
+    - id: 40012
+      name: "Cross Site Scripting (Reflected)"
+      threshold: "off"
+      strength: "default"
+    - id: 0
+      name: "Directory Browsing"
+      threshold: "off"
+      strength: "default"
+    - id: 40028
+      name: "ELMAH Information Leak"
+      threshold: "off"
+      strength: "default"
+    - id: 20019
+      name: "External Redirect"
+      threshold: "off"
+      strength: "default"
+    - id: 30002
+      name: "Format String Error"
+      threshold: "off"
+      strength: "default"
+    - id: 40008
+      name: "Parameter Tampering"
+      threshold: "off"
+      strength: "default"
+    - id: 6
+      name: "Path Traversal"
+      threshold: "off"
+      strength: "default"
+    - id: 7
+      name: "Remote File Inclusion"
+      threshold: "off"
+      strength: "default"
+    - id: 90020
+      name: "Remote OS Command Injection"
+      threshold: "off"
+      strength: "default"
+    - id: 90026
+      name: "SOAP Action Spoofing"
+      threshold: "off"
+      strength: "default"
+    - id: 90029
+      name: "SOAP XML Injection"
+      threshold: "off"
+      strength: "default"
+    - id: 40018
+      name: "SQL Injection"
+      threshold: "off"
+      strength: "default"
+    - id: 50000
+      name: "Script Active Scan Rules"
+      threshold: "off"
+      strength: "default"
+    - id: 90019
+      name: "Server Side Code Injection"
+      threshold: "off"
+      strength: "default"
+    - id: 40009
+      name: "Server Side Include"
+      threshold: "off"
+      strength: "default"
+    - id: 10045
+      name: "Source Code Disclosure - /WEB-INF folder"
+      threshold: "off"
+      strength: "default"
+  name: "activeScan"
+  type: "activeScan"
+- parameters:
+    template: "traditional-json-plus"
+    reportDir: "/home/kali"
+    reportFile: "DVWA"
+    reportTitle: "ZAP Scanning Report"
+    reportDescription: ""
+    displayReport: false
+  risks:
+  - "info"
+  - "low"
+  - "medium"
+  - "high"
+  confidences:
+  - "falsepositive"
+  - "low"
+  - "medium"
+  - "high"
+  - "confirmed"
+  name: "report"
+  type: "report"
+
