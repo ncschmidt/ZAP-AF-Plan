@@ -1,4 +1,4 @@
-# Automate Websecurity Assessment 
+# Automated Websecurity Assessment 
 ## Using OWASP ZAP and Automation Framework
 
 ## Files
