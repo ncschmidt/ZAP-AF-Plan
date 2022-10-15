@@ -3,7 +3,7 @@
 
 ## Files
 - DVWA.yaml - Automation script written in YAML for the ZAP Automation Framework, containing all informations related to the application, passive checks, actives scans and report.
-- DVWA-Report.json - OWASP ZAP vulnerability report in json.
+- DVWA-Report.json - OWASP ZAP Vulnerability Report in json.
 
 ## Requirements
 - OWASP ZAP
